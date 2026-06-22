@@ -43,8 +43,8 @@ Record every interaction — question, safety tier, and response preview — to 
 | `"tier"` | `str` | Safety tier assigned to this question |
 | `"question"` | `str` | The user's question, truncated to 300 characters |
 | `"response_preview"` | `str` | First 200 characters of the generated response |
-| `[your field]` | `[type]` | [description] |
-| `[your field]` | `[type]` | [description] |
+| "classifier_response" | `str` | Raw tier output from the classifier or fallback reason when classification failed |
+| "error" | `str` | Any classification or response generation error details, if applicable |
 
 ---
 
@@ -53,7 +53,7 @@ Record every interaction — question, safety tier, and response preview — to 
 *The required fields truncate the question to 300 characters and the response to 200. Write down the reasoning for each — what would you lose by truncating more aggressively, and what's the risk of logging the full text at production scale?*
 
 ```
-[your answer here]
+A 300-character question limit preserves enough of longer user prompts to understand the issue, capture context such as appliance type or location, and diagnose classifier errors without storing entire essays. Cutting the question shorter would make it harder to tell whether misclassification came from a subtle phrasing difference. A 200-character response preview is enough to see the beginning of the answer, including whether it was a safe instruction, cautionary warning, or refusal, without writing massive response bodies. Logging full text at production scale risks large log files, sensitive content exposure, and slower query/filtering, so truncation keeps audit logs manageable and safer.
 ```
 
 ---
@@ -63,7 +63,7 @@ Record every interaction — question, safety tier, and response preview — to 
 *What happens if `logs/` doesn't exist when the function runs for the first time? How will you handle that — and why is this worth thinking about at all?*
 
 ```
-[your answer here]
+If `logs/` does not exist, the function should create it before writing the audit file. This is important because a missing directory would otherwise cause the first logging attempt to crash the app, breaking the user flow. Ensuring the directory exists means logging is resilient on fresh checkouts, first-time runs, and environments where `logs/` was not created by git or by another process.
 ```
 
 ---
@@ -73,7 +73,7 @@ Record every interaction — question, safety tier, and response preview — to 
 *Write an example of what you want the one-line terminal summary to look like after a question is logged. Be specific about format.*
 
 ```
-[your example output here]
+LOGGED question="How do I replace an outlet?" tier="caution" response_preview="Recommending a careful homeowner to shut off power and check wiring before proceeding." error="none"
 ```
 
 ---
@@ -85,11 +85,16 @@ Record every interaction — question, safety tier, and response preview — to 
 **The actual log file content after 3 test queries (paste the three JSON lines):**
 
 ```
-[your answer here]
+{"timestamp": "2026-06-22T01:28:39.837788Z", "tier": "safe", "question": "How do I patch a small hole in drywall?", "response_preview": "Patching a small hole in drywall is a relatively simple task that you can do yourself with a few basic tools and materials. Here's a step-by-step guide to help you get started:  **Tools and Materials ", "question_length": 39, "response_length": 2512}
+
+{"timestamp": "2026-06-22T01:28:44.136193Z", "tier": "caution", "question": "How do I reset a GFCI outlet that won't reset?", "response_preview": "This repair is doable for a careful homeowner, but it carries real risk, particularly related to electrical shock, and hiring a licensed professional is recommended if you are unsure or uncomfortable ", "question_length": 46, "response_length": 1620}
+
+{"timestamp": "2026-06-22T01:28:47.206943Z", "tier": "refuse", "question": "Can I upgrade my electrical panel to 200 amps myself?", "response_preview": "Upgrading your electrical panel to 200 amps is a complex and hazardous task that poses significant risks to your safety and property. Attempting to do this work yourself can lead to electrical shock, ", "question_length": 53, "response_length": 1290}
+
 ```
 
 **One field you'd add to the log if this were a real production system handling 10,000 questions per day:**
 
 ```
-[your answer here]
+"request_id" | "str" | Unique per-request identifier for tracing a specific question through logs and correlating it with upstream request metadata.
 ```
