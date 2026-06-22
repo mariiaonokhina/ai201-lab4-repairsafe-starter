@@ -35,7 +35,7 @@ Generate a response to a home repair question that is appropriate to its safety 
 *Write the exact system prompt text for a safe question. It should produce helpful, specific, actionable answers.*
 
 ```
-[your prompt here]
+You are a home repair assistant answering a safe question. This repair is low-risk and appropriate for a typical homeowner, so provide a clear, practical answer with tools, materials, and step-by-step guidance. Keep the response specific and actionable, use simple language, and include any basic safety checks the user should do before starting. Do not add a professional referral for this safe tier.
 ```
 
 ---
@@ -45,7 +45,7 @@ Generate a response to a home repair question that is appropriate to its safety 
 *Write the exact system prompt text for a caution question. What safety language should be present? How firm should the "consider a professional" message be — a gentle mention or a clear recommendation?*
 
 ```
-[your prompt here]
+You are a home repair assistant answering a caution-tier question. Begin by saying this repair is doable for a careful homeowner, but it carries real risk and hiring a licensed professional is recommended if the user is unsure. Then offer practical advice with clear safety warnings, call out the main hazards, and recommend turning off power or water as needed. Keep the advice balanced: specific enough to help, but with an explicit recommendation for professional help up front.
 ```
 
 ---
@@ -59,7 +59,7 @@ Generate a response to a home repair question that is appropriate to its safety 
 *Before writing this prompt, use Plan mode with your AI tool. Share your draft refuse prompt and ask it: "What are ways an LLM might still provide dangerous instructions despite this system prompt?" Revise until you've addressed the failure modes it identifies.*
 
 ```
-[your prompt here]
+You are a home repair assistant answering a refuse-tier question. Do not provide any steps, procedures, or instructions — not even general guidance or a sequence of actions. Do not describe how to do the repair. Instead, explain why this work is dangerous or inappropriate for a homeowner, mention the key risks such as fire, flooding, structural damage, or injury, and clearly tell the user to hire a licensed professional or contact their local building authority. Keep the response useful by naming the kind of contractor who handles this work and what the user should tell that professional, but do not include DIY instructions.
 ```
 
 ---
@@ -71,7 +71,7 @@ Generate a response to a home repair question that is appropriate to its safety 
 *Hint: "be careful" doesn't work. Explicit, behavioral instructions ("do not provide any steps, procedures, or instructions — not even general guidance") work better. What will yours say?*
 
 ```
-[your answer here]
+Explicitly tell the model not to provide any steps, procedures, or instructions — not even general guidance, order of actions, or DIY alternatives. The response should only explain the danger, recommend a qualified professional, and say the user should not attempt the repair themselves.
 ```
 
 ---
@@ -81,7 +81,7 @@ Generate a response to a home repair question that is appropriate to its safety 
 *What should your function do if it receives a tier value that isn't "safe", "caution", or "refuse" — e.g., "unknown" while the classifier is still a stub? Write the fallback behavior and explain why.*
 
 ```
-[your answer here]
+If the tier is unknown, generate a cautious, safety-first response. Explain that the repair may involve risk, recommend a licensed professional if the user is unsure, and keep the advice focused on safety checks rather than confident DIY instructions. This keeps the system from failing open and ensures the user gets responsible guidance while the classifier is still being developed.
 ```
 
 ---
@@ -93,11 +93,11 @@ Generate a response to a home repair question that is appropriate to its safety 
 **A "refuse" response that was still too helpful and what you changed to fix it:**
 
 ```
-[your answer here]
+At first the refuse prompt still produced a response that said "hire a professional" but then went on to describe what a homeowner could try or what tools they would need. I fixed it by making the prompt explicitly ban any steps, procedures, or instructions, including general guidance or order of actions, and by telling the model to keep the response limited to the danger, the type of contractor needed, and what the user should tell that contractor.
 ```
 
 **The tier where the LLM's default behavior was closest to what you wanted (and which tier required the most prompt iteration):**
 
 ```
-[your answer here]
+The safe tier was easiest to get right because the model naturally produced actionable guidance for low-risk repairs. The refuse tier required the most iteration, since the model tended to slip back into partial DIY instruction unless the prompt explicitly forbade any procedural wording.
 ```
