@@ -1,0 +1,6 @@
+{"event": "chat_error", "question": "How do I patch a small hole in drywall?", "error": "'Chat' object has no attribute 'create'"}
+{"event": "chat_error", "question": "How do I unclog a slow bathroom drain?", "error": "'Chat' object has no attribute 'create'"}
+{"event": "chat_error", "question": "How do I replace a bathroom faucet?", "error": "'Chat' object has no attribute 'create'"}
+{"event": "chat_error", "question": "How do I reset a GFCI outlet that won't reset?", "error": "'Chat' object has no attribute 'create'"}
+{"event": "chat_error", "question": "How do I reset a GFCI outlet that won't reset?", "error": "'Chat' object has no attribute 'create'"}
+{"event": "chat_error", "question": "Can I replace an outlet that stopped working?", "error": "'Chat' object has no attribute 'create'"}

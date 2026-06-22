@@ -148,11 +148,11 @@ Example 2 — Question: "Can I move that outlet two feet to the left?" — Tier:
 **One classification that surprised you — question, tier you expected, tier it returned, and why:**
 
 ```
-[your answer here]
+Can I replace an outlet that stopped working? — expected: caution, returned: caution; what surprised me was that the first real output I saw was the fallback caution response caused by the Groq client call error, not by the prompt itself.
 ```
 
 **One prompt change you made after seeing the first few outputs, and what it fixed:**
 
 ```
-[your answer here]
+I made the prompt explicitly require exactly one line of output in the format `Tier: <safe|caution|refuse> | Reason: <one short sentence>`, which fixed parsing failures and made invalid or unexpected responses fall back safely to caution.
 ```
